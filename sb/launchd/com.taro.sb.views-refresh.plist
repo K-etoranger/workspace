@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>com.taro.sb.views-refresh</string>
+	<key>ProcessType</key>
+	<string>Background</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/Users/taro/Workspace/sb/bin/sb</string>
+		<string>views</string>
+		<string>refresh</string>
+		<string>--by</string>
+		<string>sb/views-refresh</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>StandardErrorPath</key>
+	<string>/Users/taro/Workspace/logs/sb.views-refresh.err.log</string>
+	<key>StandardOutPath</key>
+	<string>/Users/taro/Workspace/logs/sb.views-refresh.log</string>
+	<key>StartInterval</key>
+	<integer>1800</integer>
+	<key>WatchPaths</key>
+	<array>
+		<string>/Users/taro/Workspace/SecondBrain/40_tasks/active</string>
+	</array>
+</dict>
+</plist>

@@ -1,0 +1,101 @@
+# SecondBrain の層と、層ごとのファイルの形（地図の元）。
+# 層の中のファイル名（20_identity のファイル・50_media の種類・60_distilled と 00_inbox のソース）は決めない。
+# 新しい形の文書を足すときだけ、[files] に1行と templates/ にテンプレートを1つ足す。
+# 書式は TOML の単純な部分集合（1行1項目・インライン表・文字列/数値/真偽/配列）。
+
+[meta]
+version = "1.0.0"
+format = 1
+
+# ---- 層ごとの決まり（README の元）。だれが書くか・読むかは書かない（各ファイルの頭書き「書いた物」でたどる） ----
+[layers."00_inbox/messages"]
+what = "届いた連絡の本文（秘密の値は伏せ字。会社の言葉は残す）"
+unit = "ソース×論理日"
+
+[layers."00_inbox/conversations"]
+what = "エージェントとの本人可視の会話"
+unit = "エージェント×論理日"
+
+[layers."10_daily"]
+what = "その日の要約と出来事、本人像の変化（20_identity で足した行・消した行）"
+unit = "論理日"
+
+[layers."20_identity"]
+what = "今の本人（最新だけ）"
+unit = "ファイル（名前は自由）"
+
+[layers."30_projects"]
+what = "案件"
+unit = "案件"
+
+[layers."40_tasks"]
+what = "タスクと予定・進捗"
+unit = "タスク"
+
+[layers."50_media"]
+what = "見た・聴いた・いいねした履歴"
+unit = "種類×論理日（＋現在値）"
+
+[layers."60_distilled"]
+what = "ソースごとの蒸留"
+unit = "ソース×論理日"
+
+[layers."90_logs"]
+what = "仕組みの記録"
+unit = "種類ごと"
+
+[layers."README・NOW"]
+what = "地図・今やること"
+unit = "1ファイル"
+
+# ---- ファイルの置き場（sb check と書き込み先の検査の元） ----
+# path の {…} は: date=YYYY-MM-DD / year / month / id=タスクID / project=案件名 / name=任意名
+#   / inbox_messages・inbox_conversations・identity・media_daily・media_current・distill = 英小文字・数字・_・-・/ の名前（何でも）
+#   / [media.kinds] にある種類は daily・has_current が true のときだけ日別・current を持つ。
+# cmd = そのファイルを書いてよい sb のコマンド（空白区切り）。readonly = true は sb が書き込みを断る。
+# 上から順に照合する（先に一致した物を使う）。
+[files]
+inbox_messages = { layer = "00_inbox/messages", path = "00_inbox/messages/{inbox_messages}/{date}.md", kind = "inbox", template = "inbox", cmd = "inbox" }
+inbox_conversations = { layer = "00_inbox/conversations", path = "00_inbox/conversations/{inbox_conversations}/{date}.md", kind = "inbox", template = "conversation", cmd = "inbox" }
+daily = { layer = "10_daily", path = "10_daily/{year}/{date}.md", kind = "daily", template = "daily", cmd = "daily identity" }
+identity = { layer = "20_identity", path = "20_identity/{identity}.md", kind = "identity", template = "identity", cmd = "identity" }
+project_active = { layer = "30_projects", path = "30_projects/active/{project}/メモ.md", kind = "project", template = "project", cmd = "project" }
+project_active_doc = { layer = "30_projects", path = "30_projects/active/{project}/資料/{name}.md", kind = "project", template = "", cmd = "project" }
+project_archive = { layer = "30_projects", path = "30_projects/archive/{project}/メモ.md", kind = "project", template = "project", cmd = "project", readonly = true }
+project_archive_doc = { layer = "30_projects", path = "30_projects/archive/{project}/資料/{name}.md", kind = "project", template = "", cmd = "project", readonly = true }
+task_active = { layer = "40_tasks", path = "40_tasks/active/{id}.md", kind = "task", template = "task", cmd = "task" }
+task_archive = { layer = "40_tasks", path = "40_tasks/archive/{year}/{month}/{id}.md", kind = "task", template = "task", cmd = "task", readonly = true }
+task_base = { layer = "40_tasks", path = "40_tasks/タスク.base", kind = "view", template = "", cmd = "views" }
+media_current = { layer = "50_media", path = "50_media/{media_current}/current.md", kind = "media", template = "media-current", cmd = "media" }
+media_daily = { layer = "50_media", path = "50_media/{media_daily}/{date}.md", kind = "media", template = "media-daily", cmd = "media" }
+distilled = { layer = "60_distilled", path = "60_distilled/{distill}/{date}.md", kind = "distilled", template = "distilled", cmd = "distill" }
+log_check = { layer = "90_logs", path = "90_logs/check/{date}.md", kind = "log", template = "log-check", cmd = "check" }
+log_audit = { layer = "90_logs", path = "90_logs/audits/{name}/{date}.md", kind = "log", template = "log-audit", cmd = "log" }
+log_schedule = { layer = "90_logs", path = "90_logs/schedule/{name}.md", kind = "log", template = "log-schedule", cmd = "log" }
+log_handoff = { layer = "90_logs", path = "90_logs/handoff.md", kind = "log", template = "handoff", cmd = "log" }
+now = { layer = "README・NOW", path = "NOW.md", kind = "view", template = "now", cmd = "views" }
+readme = { layer = "README・NOW", path = "README.md", kind = "view", template = "readme", cmd = "views" }
+
+# ---- 50_media の種類ごとの表の形 ----
+# ここに無い種類も書ける（日別と current を持ち、列は受け取った JSON のキー。ファイルがあればその表の列）。
+# daily = 日別ファイルを持つ / has_current = current.md を持つ
+# columns = 日別の表の列 / current_columns = current.md の表の列（省略時は columns）
+[media.kinds]
+"browsing/web" = { label = "ブラウザの閲覧", daily = true, has_current = false, columns = ["時刻", "ページ名", "サイト", "回数"] }
+"browsing/video" = { label = "動画の視聴", daily = true, has_current = false, columns = ["時刻", "動画名", "チャンネル", "端末"] }
+"likes/photo" = { label = "写真のいいね", daily = true, has_current = true, columns = ["時刻", "投稿者", "内容の要約", "画像/動画の元データ"] }
+"likes/sns" = { label = "SNS のいいね", daily = true, has_current = true, columns = ["時刻", "投稿者", "内容の要約", "画像/動画の元データ"] }
+movies = { label = "映画", daily = true, has_current = true, columns = ["時刻", "題名", "詳細", "元データ"] }
+"songs/history" = { label = "曲の再生", daily = true, has_current = false, columns = ["時刻", "曲名", "アーティスト", "アルバム"] }
+"songs/liked" = { label = "曲のお気に入り", daily = true, has_current = true, columns = ["時刻", "曲名", "アーティスト", "アルバム"], current_columns = ["曲名", "アーティスト", "追加日"] }
+books = { label = "本", daily = true, has_current = true, columns = ["時刻", "作品名", "作者", "種類", "画像の元データ"] }
+video_liked = { label = "動画の高評価", daily = true, has_current = true, columns = ["時刻", "チャンネル", "題名", "リンク"] }
+garden_tools = { label = "庭の道具", daily = false, has_current = true, columns = ["名前", "置き場", "種類", "買った年"] }
+plants = { label = "植物", daily = true, has_current = false, columns = ["時刻", "品種", "内容", "価格", "リンク"] }
+
+# ---- 90_logs の種類 ----
+[logs.kinds]
+check = { path = "90_logs/check/YYYY-MM-DD.md", mode = "置き換え（sb check）" }
+audits = { path = "90_logs/audits/<監査名>/YYYY-MM-DD.md", mode = "作成のみ" }
+schedule = { path = "90_logs/schedule/<定時処理名>.md", mode = "追記" }
+handoff = { path = "90_logs/handoff.md", mode = "追記" }

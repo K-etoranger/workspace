@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>com.taro.sb.check</string>
+	<key>ProcessType</key>
+	<string>Background</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/Users/taro/Workspace/sb/bin/sb</string>
+		<string>check</string>
+		<string>--by</string>
+		<string>sb/check</string>
+	</array>
+	<key>StandardErrorPath</key>
+	<string>/Users/taro/Workspace/logs/sb.check.err.log</string>
+	<key>StandardOutPath</key>
+	<string>/Users/taro/Workspace/logs/sb.check.log</string>
+	<key>StartCalendarInterval</key>
+	<dict>
+		<key>Hour</key>
+		<integer>5</integer>
+		<key>Minute</key>
+		<integer>2</integer>
+	</dict>
+</dict>
+</plist>

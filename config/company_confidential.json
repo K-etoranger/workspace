@@ -1,0 +1,29 @@
+{
+  "schema_version": 2,
+  "purpose": "勤務先の機密情報を外へ出さないための指定。この公開用の Workspace では偽の目印だけを置く。",
+  "owner": "taro",
+  "enforcement": "fail_closed",
+  "path_prefixes": [
+    "company/"
+  ],
+  "path_globs": [
+    "**/会社資料/**"
+  ],
+  "content_markers": [
+    "EXAMPLE-CORP-CONFIDENTIAL",
+    "ZZ-部品番号-0000"
+  ],
+  "content_marker_min_hits": 1,
+  "content_scan_extensions": [
+    ".md",
+    ".txt",
+    ".csv",
+    ".tsv",
+    ".json",
+    ".jsonl"
+  ],
+  "content_scan_exclude_prefixes": [],
+  "local_only_source_paths": [
+    "/Users/taro/Workspace/company"
+  ]
+}

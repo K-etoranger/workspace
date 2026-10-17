@@ -1,0 +1,7 @@
+{
+  "name": "taskizer",
+  "private": true,
+  "type": "module",
+  "description": "00_inbox の新着をタスクにする（sb inbox list → モデル判定 → sb task new）",
+  "scripts": { "test": "./test.sh" }
+}

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>HOME</key>
+		<string>/Users/taro</string>
+		<key>PATH</key>
+		<string>/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+		<key>SB_BIN</key>
+		<string>/Users/taro/Workspace/sb/bin/sb</string>
+	</dict>
+	<key>Label</key>
+	<string>com.taro.taskizer.task-checks-report</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/opt/homebrew/bin/node</string>
+		<string>/Users/taro/Workspace/src/taskizer/bin/taskize.mjs</string>
+	</array>
+	<key>StandardErrorPath</key>
+	<string>/Users/taro/Workspace/logs/taskizer.task-checks-report.err.log</string>
+	<key>StandardOutPath</key>
+	<string>/Users/taro/Workspace/logs/taskizer.task-checks-report.log</string>
+	<key>StartCalendarInterval</key>
+	<array>
+		<dict>
+			<key>Hour</key>
+			<integer>8</integer>
+			<key>Minute</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>Hour</key>
+			<integer>12</integer>
+			<key>Minute</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>Hour</key>
+			<integer>17</integer>
+			<key>Minute</key>
+			<integer>0</integer>
+		</dict>
+	</array>
+	<key>WorkingDirectory</key>
+	<string>/Users/taro/Workspace/src/taskizer</string>
+</dict>
+</plist>

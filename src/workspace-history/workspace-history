@@ -1,0 +1,34 @@
+#!/bin/zsh
+# 人が書く物の変更を履歴へcommitする。
+# - Workspace/.git: README.md・config/（対象は Workspace/.gitignore で決まる）
+# - SecondBrain/.git: SecondBrain の md（対象は SecondBrain/.gitignore で決まる）
+# 対象の作業ツリーは WS_HISTORY_REPOS（改行か空白区切り）で差し替えられる。.git の移設は切り替えのときに行う。
+# usage: workspace-history [--agent Codex|Claude|launchd] [--task-exec ID] [message]
+# 変更が無ければ何もしない。別のcommitが進行中（index.lock）なら次回に回す。.git が無い作業ツリーは飛ばす。
+set -u
+WS="/Users/taro/Workspace"
+repos=(${=${WS_HISTORY_REPOS:-$WS $WS/SecondBrain}})
+agent="launchd"; task=""; msg=""
+while (( $# )); do
+  case "$1" in
+    --agent) agent="$2"; shift 2 ;;
+    --task-exec) task="$2"; shift 2 ;;
+    *) msg="$1"; shift ;;
+  esac
+done
+[[ -z "$msg" ]] && msg="Snapshot workspace changes"
+body="Agent: ${agent}"
+[[ -n "$task" ]] && body="Task-Exec: ${task}
+${body}"
+snapshot() {  # $1 = 作業ツリー
+  local dir="$1" gitdir
+  gitdir="$(/usr/bin/git -C "$dir" rev-parse --absolute-git-dir 2>/dev/null)" || { print -u2 "${dir}: no git, skipped"; return 0; }
+  [[ "$(/usr/bin/git -C "$dir" rev-parse --show-toplevel 2>/dev/null)" == "${dir:A}" ]] || { print -u2 "${dir}: not a repo root, skipped"; return 0; }
+  [[ -f "$gitdir/index.lock" ]] && { print -u2 "${dir}: commit in progress, skipped"; return 0; }
+  /usr/bin/git -C "$dir" add -A || return 1
+  /usr/bin/git -C "$dir" diff --cached --quiet && return 0
+  /usr/bin/git -C "$dir" commit -q -m "$msg" -m "$(/usr/bin/git -C "$dir" diff --cached --name-only | sed 's/^/- /')" -m "$body"
+}
+rc=0
+for r in "${repos[@]}"; do snapshot "$r" || rc=1; done
+exit $rc

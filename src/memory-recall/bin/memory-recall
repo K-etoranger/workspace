@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+import os
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+VENV = ROOT / ".venv"
+if Path(sys.prefix).resolve() != VENV.resolve():
+    # sqlite-vec・torch・transformers はこの repo の .venv にある
+    os.execv(VENV / "bin/python", [str(VENV / "bin/python"), __file__, *sys.argv[1:]])
+sys.path.insert(0, str(ROOT))
+from memory_recall.cli import main
+
+sys.exit(main(sys.argv[1:]))

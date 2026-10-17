@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>KeepAlive</key>
+	<true/>
+	<key>Label</key>
+	<string>com.taro.memory-recall.serve</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/Users/taro/Workspace/src/memory-recall/.venv/bin/python</string>
+		<string>/Users/taro/Workspace/src/memory-recall/bin/memory-recall</string>
+		<string>serve</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>StandardErrorPath</key>
+	<string>/Users/taro/Workspace/logs/memory-recall.serve.err.log</string>
+	<key>StandardOutPath</key>
+	<string>/Users/taro/Workspace/logs/memory-recall.serve.log</string>
+	<key>ThrottleInterval</key>
+	<integer>30</integer>
+	<key>Umask</key>
+	<integer>63</integer>
+	<key>WorkingDirectory</key>
+	<string>/Users/taro/Workspace/src/memory-recall</string>
+</dict>
+</plist>

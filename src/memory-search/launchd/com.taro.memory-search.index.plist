@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>com.taro.memory-search.index</string>
+	<key>ProcessType</key>
+	<string>Standard</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/Users/taro/Workspace/src/memory-search/.venv/bin/python</string>
+		<string>/Users/taro/Workspace/src/memory-search/bin/memory-search</string>
+		<string>build</string>
+	</array>
+	<key>StandardErrorPath</key>
+	<string>/Users/taro/Workspace/logs/memory-search.index.err.log</string>
+	<key>StandardOutPath</key>
+	<string>/Users/taro/Workspace/logs/memory-search.index.log</string>
+	<key>StartInterval</key>
+	<integer>10800</integer>
+</dict>
+</plist>

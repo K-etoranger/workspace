@@ -1,0 +1,65 @@
+filters:
+  and:
+    - file.inFolder("40_tasks/active")
+    - 'note["種類"] == "task"'
+views:
+  - type: table
+    name: 今日
+    filters:
+      and:
+        - 'note["区分"] == "タスク"'
+        - 'note["状態"] != "waiting"'
+        - 'note["期限"]'
+        - 'note["期限"].toString().slice(0, 10) <= today().format("YYYY-MM-DD")'
+    groupBy:
+      property: 案件
+      direction: ASC
+    order:
+      - 件名
+      - 状態
+      - 期限
+      - 担当
+      - 見積
+    sort:
+      - property: 期限
+        direction: ASC
+  - type: table
+    name: タスク
+    filters:
+      and:
+        - 'note["区分"] == "タスク"'
+    order:
+      - 件名
+      - 状態
+      - 期限
+      - 担当
+      - 見積
+      - 案件
+    sort:
+      - property: 期限
+        direction: ASC
+  - type: table
+    name: 予定
+    filters:
+      and:
+        - 'note["区分"] == "予定"'
+    order:
+      - 件名
+      - 開始
+      - 終了
+      - 状態
+      - 案件
+    sort:
+      - property: 開始
+        direction: ASC
+  - type: table
+    name: 案件別
+    groupBy:
+      property: 案件
+      direction: ASC
+    order:
+      - 件名
+      - 区分
+      - 状態
+      - 期限
+      - 担当

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Manage Taro Tasks"
+  short_description: "Create, update, close, and show Taro's tasks with sb task"
+  default_prompt: "Use $manage-taro-tasks to create, update, close, or show Taro's tasks with sb task."

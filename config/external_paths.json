@@ -1,0 +1,28 @@
+{
+  "purpose": "Workspaceの外に触れてよい場所の一覧。新しいPCではこのファイルのpathを入れ替える。",
+  "workspace": "/Users/taro/Workspace",
+  "home": "/Users/taro",
+  "external": {
+    "launch_agents": {
+      "path": "/Users/taro/Library/LaunchAgents",
+      "why": "定時実行の登録先"
+    },
+    "codex_home": {
+      "path": "/Users/taro/.codex",
+      "why": "Codex の設定・skill・共通指示（AGENTS.md）"
+    },
+    "claude_home": {
+      "path": "/Users/taro/.claude",
+      "why": "Claude Codeの設定・skill・定時処理・memory"
+    },
+    "chrome_beta_app": {
+      "path": "/Applications/Google Chrome Beta.app",
+      "why": "エージェント専用の Chrome Beta。本人の Chrome には繋がない"
+    },
+    "claude_cli": {
+      "path": "/Users/taro/.local/bin/claude",
+      "why": "Claude Code CLI本体"
+    }
+  },
+  "retired": {}
+}

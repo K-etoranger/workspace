@@ -1,0 +1,4 @@
+interface:
+  display_name: "Write Workspace README"
+  short_description: "Write or fix a Workspace README in the fixed template"
+  default_prompt: "Use $write-workspace-readme to write or fix a README in Workspace following the fixed template."

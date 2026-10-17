@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["status", "reviewed_refs", "failed_refs", "tasks", "notes", "updates", "closes", "summary_lines", "error_code"],
+  "properties": {
+    "status": { "type": "string", "enum": ["ok", "warn"] },
+    "reviewed_refs": { "type": "array", "items": { "type": "string", "pattern": "^r[0-9]{1,4}$" } },
+    "failed_refs": { "type": "array", "items": { "type": "string", "pattern": "^r[0-9]{1,4}$" } },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["ref", "type", "title", "owner", "state", "due", "due_basis", "due_reason", "start", "end", "priority", "estimate", "project", "wait_for", "recheck", "body", "event_at", "source_actor", "source_target", "content_summary", "unknown_details"],
+        "properties": {
+          "ref": { "type": "string", "pattern": "^r[0-9]{1,4}$" },
+          "type": { "type": "string", "enum": ["タスク", "予定"] },
+          "title": { "type": "string", "minLength": 1 },
+          "owner": { "type": "string", "enum": ["本人", "エージェント", "本人+エージェント"] },
+          "state": { "type": "string", "enum": ["open", "waiting"] },
+          "due": { "type": "string" },
+          "due_basis": { "type": "string", "enum": ["ai_provisional", "external_formal", "user_confirmed", "not_applicable"] },
+          "due_reason": { "type": "string" },
+          "start": { "type": "string" },
+          "end": { "type": "string" },
+          "priority": { "type": "string", "enum": ["high", "medium", "low"] },
+          "estimate": { "type": "string" },
+          "project": { "type": "string" },
+          "wait_for": { "type": "string" },
+          "recheck": { "type": "string" },
+          "body": { "type": "string", "minLength": 1 },
+          "event_at": { "type": "string", "minLength": 1 },
+          "source_actor": { "type": "string", "minLength": 1 },
+          "source_target": { "type": "string", "minLength": 1 },
+          "content_summary": { "type": "string", "minLength": 1 },
+          "unknown_details": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["ref", "task_id", "text"],
+        "properties": {
+          "ref": { "type": "string", "pattern": "^r[0-9]{1,4}$" },
+          "task_id": { "type": "string" },
+          "text": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "updates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["ref", "task_id", "title", "due", "start", "end", "state", "wait_for", "recheck", "reason"],
+        "properties": {
+          "ref": { "type": "string", "pattern": "^r[0-9]{1,4}$" },
+          "task_id": { "type": "string" },
+          "title": { "type": "string" },
+          "due": { "type": "string" },
+          "start": { "type": "string" },
+          "end": { "type": "string" },
+          "state": { "type": "string", "enum": ["", "open", "waiting"] },
+          "wait_for": { "type": "string" },
+          "recheck": { "type": "string" },
+          "reason": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "closes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["ref", "task_id", "result", "reason"],
+        "properties": {
+          "ref": { "type": "string", "pattern": "^r[0-9]{1,4}$" },
+          "task_id": { "type": "string" },
+          "result": { "type": "string", "enum": ["done", "cancelled"] },
+          "reason": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "summary_lines": { "type": "array", "items": { "type": "string" } },
+    "error_code": { "type": "string" }
+  }
+}
