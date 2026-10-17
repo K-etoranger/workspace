@@ -49,7 +49,7 @@ python3 deploy.py --apply    # 配置する。その後に引数なしで流し�
 - 20_identity（sb identity set --by agents/distill-preferences）
 - 10_daily（sb daily write --by agents/distill-daily）
 - 30_projects/active（sb project status・log・new・close・meta --by agents/distill-projects）
-- 40_tasks/active（案件蒸留の質問タスクだけ。sb task new・note・done・update --project --by agents/distill-projects）
+- 40_tasks/active（案件蒸留の質問タスクと、案件蒸留が根拠付きで作る・直す・閉じるタスク。sb task new・note・update・wait・reopen・done・cancel --by agents/distill-projects）
 - 90_logs/schedule（sb log schedule --by agents/<定時処理の名前>）
 - 90_logs/check（sb check --by agents/distill-daily）
 
@@ -73,7 +73,7 @@ python3 deploy.py --apply    # 配置する。その後に引数なしで流し�
 - distill-messages: 連絡と会話の本人の発言から候補を蒸留して 60_distilled へ書く。
 - distill-preferences: 日々の材料から関心・長い好みを蒸留して 20_identity を直す。
 - distill-daily: その日の材料から本人の関心・行動・気分・出来事を 10_daily へまとめる。
-- distill-projects: 前回からの材料で active の案件メモを今の姿に書き直し、分からないことを本人への質問タスクにまとめる。
+- distill-projects: 前回からの材料と案件メモ・open のタスクを突き合わせ、案件メモを今の姿に書き直し、根拠のある食い違いはタスクを直し、迷う物を本人への質問タスクにまとめる。
 
 ## 試験
 
