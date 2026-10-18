@@ -6,6 +6,8 @@ This repository is a small copy of a real Workspace. The code and the rules are 
 
 **Most of the content is in Japanese**, because the real Workspace runs in Japanese: the rules the agents read, the prompts of the scheduled jobs, the code comments and the sample memory. This page explains the ideas in English. The Japanese map of the folders is [README.ja.md](README.ja.md).
 
+Why it is built this way and how it runs through a day is written up in Japanese on Zenn: [AI のエージェントに記憶とタスクを任せる仕組みを、1つのフォルダで作った](https://zenn.dev/ketoranger/articles/workspace-ai-agents-memory).
+
 ## The ideas
 
 - **One place.** All work, data, memory and tools live inside one folder. Anything outside it that may be touched is listed in `config/external_paths.json`, and a check counts paths that point anywhere else.
