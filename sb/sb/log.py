@@ -41,14 +41,12 @@ def schedule(args):
 
 
 def handoff(args):
-    if args.agent not in ("claude", "codex"):
-        raise SbError(1, "--agent は claude か codex")
     text = " ".join((args.body or "").split())
     if not text:
         raise SbError(1, "--text が空")
     rel = "90_logs/handoff.md"
     with Tx("log", args.by, args.dry_run) as tx:
         meta, body = frontmatter.parse(tx.read(rel) or new_doc("handoff", args.by))
-        body = body.rstrip("\n") + f"\n- {minute()} [{args.agent}] {text}\n"
+        body = body.rstrip("\n") + f"\n- {minute()} [{args.by}] {text}\n"
         tx.put(rel, frontmatter.dump(touch(meta, args.by), body))
         return {"path": rel, "plan": tx.commit()}

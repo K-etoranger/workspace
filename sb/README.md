@@ -58,7 +58,7 @@ python3 -m pytest -q          # repo の直下から
 | 書く物 | 値 | 例 |
 |---|---|---|
 | repo の処理 | `<repo名>/<処理>` | `sb/tidy` |
-| 人・エージェントが直接書く | `本人`・`claude`・`codex` | — |
+| 人・エージェントが直接書く | `本人`、またはエージェントの名前（小文字。`/` を含まない） | `claude` |
 
 ## 置き場の決め方（環境変数）
 
@@ -194,9 +194,9 @@ sb distill show [--source <ソース>] [--date D]      # --source を省くと�
 ```sh
 sb log audit --name <名前> [--date D] --text "…" --by <書いた物>    # 同じ日付は上書きしない
 sb log schedule --task <処理> --text "…" --by <書いた物>  # ## YYYY-MM-DD HH:MM で追記
-sb log handoff --agent claude --text "何を / どこで / どう確かめたか / task:<ID>" --by claude
+sb log handoff --text "何を / どこで / どう確かめたか / task:<ID>" --by <エージェント名>
 ```
-- `log handoff` は handoff の記録の末尾に `- YYYY-MM-DD HH:MM [claude|codex] <本文>` を1行足す。前の行は変えない。`--agent` は claude か codex。
+- `log handoff` は handoff の記録の末尾に `- YYYY-MM-DD HH:MM [<--by>] <本文>` を1行足す。前の行は変えない。エージェントは `--by` に自分の名前（小文字。例 `claude`）を渡す。
 - 本文は1行で、何を決めた・変えたか / どこで（repo・ファイル） / どう確かめたか / `task:<ID>` を ` / ` で区切る。
 - 他の書き込み中は終了コード 2 なので、待ってから同じコマンドをやり直す。
 

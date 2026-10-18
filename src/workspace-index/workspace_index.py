@@ -84,7 +84,7 @@ class Repo:
     reads: list[str] = field(default_factory=list)
     models: list[str] = field(default_factory=list)
     jobs: list[dict] = field(default_factory=list)
-    agent_jobs: list[str] = field(default_factory=list)  # scheduled/<名前>/SKILL.md（エージェントの定時処理。時刻はアプリが持つ）
+    agent_jobs: list[tuple[str, str]] = field(default_factory=list)  # (名前, schedule:) scheduled/<名前>/SKILL.md のエージェントの定時処理
 
 
 def load_repo(name: str, path: Path) -> Repo:
@@ -103,8 +103,22 @@ def load_repo(name: str, path: Path) -> Repo:
         except Exception:  # noqa: BLE001 - 壊れた plist は警告にする
             data = {"Label": plist.stem, "_broken": True}
         repo.jobs.append(data)
-    repo.agent_jobs = sorted(p.parent.name for p in (path / "scheduled").glob("*/SKILL.md"))
+    repo.agent_jobs = [(p.parent.name, schedule(p)) for p in sorted((path / "scheduled").glob("*/SKILL.md"))]
     return repo
+
+
+def schedule(body: Path) -> str:
+    """本文の頭の schedule:（cron）。無ければ空。"""
+    m = re.search(r'^schedule:\s*"?([^"\n]+)"?\s*$', body.read_text(encoding="utf-8").split("\n---", 1)[0], re.M)
+    return m[1].strip() if m else ""
+
+
+def cron_when(cron: str) -> str:
+    """毎日の「分 時」だけの cron は 04:05・08:05 の形に、それ以外はそのまま出す。"""
+    f = cron.split()
+    if len(f) == 5 and f[2:] == ["*", "*", "*"] and f[0].isdigit() and all(h.isdigit() for h in f[1].split(",")):
+        return "・".join(f"{int(h):02d}:{int(f[0]):02d}" for h in f[1].split(","))
+    return f"`{cron}`" if cron else "時刻なし"
 
 
 def repos(ws: Path) -> list[Repo]:
@@ -314,11 +328,11 @@ def build(ws: Path) -> tuple[dict[str, str], list[str]]:
     rows = []
     for r in src_repos:
         jobs = "<br>".join([f"`{short(j['Label'])}` {when(j)}" for j in r.jobs]
-                            + [f"`{n}` エージェント" for n in r.agent_jobs]) or "なし"
+                            + [f"`{n}` {cron_when(c)}（エージェント）" for n, c in r.agent_jobs]) or "なし"
         rows.append([f"[`{r.name}`]({r.name}/README.md)", r.first or "（README の冒頭1行が無い）", jobs])
     out["src/README.md"] = doc("src", TOP_TEXT["src"],
                                "repo を使うなら、その repo の README.md を読む。\n\n"
-                               + table(["repo", "何か", "定時処理（launchd は時刻、エージェントの定時処理は「エージェント」）"], rows))
+                               + table(["repo", "何か", "定時処理（時刻。エージェントの定時処理は「（エージェント）」付き）"], rows))
 
     drows, dwarn = data_rows(ws, all_repos)
     out["data/README.md"] = doc("data", TOP_TEXT["data"],

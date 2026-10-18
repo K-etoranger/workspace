@@ -13,7 +13,7 @@
   git -C <本番の repo> worktree add ~/Workspace/work/worktrees/<repo>/<task-exec> -b <task-exec>
   ```
   本番の repo の場所は `Workspace/README.md` からたどる。
-- commit のメッセージの末尾に `Task-Exec: <task-exec>` と `Agent: <claude か codex>` を付ける。
+- commit のメッセージの末尾に `Task-Exec: <task-exec>` と `Agent: <エージェント名（小文字）>` を付ける。
 - repo の試験を worktree の中で流して通す。
 - 通ったら本番へは入れずに止め、差分・変えた文書の全文・試験の結果・本番で変わること（定時処理・配置・data の移動）を本人に見せ、タスクを needs_review にする。
 - 本人の承認を得てから本番の branch へ取り込み（例: `git -C <本番の repo> merge --ff-only <task-exec>`）、配置と data の移動をして、確かめる。

@@ -8,10 +8,10 @@ import chrome_beta as B  # noqa: E402
 
 
 class TestChromeBeta(unittest.TestCase):
-    def test_port_and_paths_are_agents_own(self):
+    def test_port_and_paths_are_own(self):
         self.assertEqual(B.PORT, 9290)
-        self.assertTrue(str(B.PROFILE).endswith("data/agents/browser_profiles/chrome_beta"))
-        self.assertTrue(str(B.STATE).endswith("data/agents/state/chrome_beta.json"))
+        self.assertTrue(str(B.PROFILE).endswith("data/agent-setup/browser_profiles/chrome_beta"))
+        self.assertTrue(str(B.STATE).endswith("data/agent-setup/state/chrome_beta.json"))
 
     def test_stable_refused(self):
         with self.assertRaises(RuntimeError):

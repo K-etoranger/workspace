@@ -16,7 +16,7 @@ def main() -> int:
         event = json.load(sys.stdin)
         body = json.dumps({"session_id": event.get("session_id", ""), "prompt": event.get("prompt", "")}).encode()
         request = urllib.request.Request(URL, data=body, headers={"Content-Type": "application/json"})
-        with urllib.request.urlopen(request) as response:  # 待つ上限は settings の timeout（Claude Code が打ち切る）
+        with urllib.request.urlopen(request) as response:  # 待つ上限は settings の timeout（エージェントが打ち切る）
             context = json.loads(response.read()).get("context", "")
     except Exception:
         return 0

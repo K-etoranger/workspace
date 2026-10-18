@@ -6,7 +6,7 @@ Workspace と SecondBrain の、人が書く物の変更を1時間ごとに git 
 
 ```sh
 ./workspace-history                                       # 変更があれば commit する
-./workspace-history --agent Claude --task-exec <ID> "<メッセージ>"   # 作業の区切りで手で記録する
+./workspace-history --agent <エージェント名（小文字）> --task-exec <ID> "<メッセージ>"   # 作業の区切りで手で記録する
 ```
 
 - 記録する所: `Workspace/.git`（対象は `Workspace/.gitignore` が決める。README・config など）と `SecondBrain/.git`（対象は `SecondBrain/.gitignore` が決める。md）。

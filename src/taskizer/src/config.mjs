@@ -11,8 +11,8 @@ export const STATE_PATH = path.join(STATE_DIR, "taskizer_state.json");
 export const MODEL_USAGE_PATH = path.join(STATE_DIR, "taskizer_model_usage.jsonl");
 // モデル判定は Claude CLI。
 export const CLAUDE_BIN = process.env.SECONDBRAIN_CLAUDE_BIN || path.join(HOME, ".local", "bin", "claude");
-// タスクの決まり（全エージェント共通の skill。agents が配置する）。モデルへの指示に差し込む。
-export const TASK_SKILL = process.env.TASKIZER_TASK_SKILL || path.join(HOME, ".claude", "skills", "manage-taro-tasks", "SKILL.md");
+// タスクの決まり（この repo の skill。エージェントにも配置される）。モデルへの指示に差し込む。
+export const TASK_SKILL = process.env.TASKIZER_TASK_SKILL || new URL("../skills/manage-taro-tasks/SKILL.md", import.meta.url).pathname;
 export const READER = "taskizer";
 export const BY = "taskizer/task-checks";
 // タスク化する 00_inbox/messages のソースと、1回のモデル呼び出しに渡す件数の上限。

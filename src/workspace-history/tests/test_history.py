@@ -34,12 +34,12 @@ def test_history_commits_each_repo_once_and_skips_non_git(tmp_path):
     (b / "n.md").write_text("y\n")
     plain.mkdir()
     env = {"WS_HISTORY_REPOS": f"{a} {b} {plain}"}
-    p = run(["/bin/zsh", str(ROOT / "workspace-history"), "--agent", "Claude", "--task-exec", "t1", "snap"], **env)
+    p = run(["/bin/zsh", str(ROOT / "workspace-history"), "--agent", "claude", "--task-exec", "t1", "snap"], **env)
     assert p.returncode == 0, p.stderr
     assert "no git, skipped" in p.stderr
     for d in (a, b):
         log = git(d, "log", "--format=%B")
-        assert "snap" in log and "Task-Exec: t1" in log and "Agent: Claude" in log
+        assert "snap" in log and "Task-Exec: t1" in log and "Agent: claude" in log
     run(["/bin/zsh", str(ROOT / "workspace-history")], **env)
     assert git(a, "rev-list", "--count", "HEAD").strip() == "1"  # 変更が無ければ commit しない
 

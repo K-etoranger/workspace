@@ -14,7 +14,7 @@ python3 bin/check_repo_independence.py          # repo が他の repo（src/<別
 
 - 作る README: `Workspace/README.md`・`src/README.md`・`data/README.md`・`models/README.md`・`logs/README.md`。
 - 材料: 各 repo（`src/*` と `sb`）の README の冒頭1行と欄、各 repo の `launchd/*.plist` とコード。
-  - `src/README.md`: repo の名前・冒頭1行・定時処理の名前と時刻（plist から出す）
+  - `src/README.md`: repo の名前・冒頭1行・定時処理の名前と時刻（plist と、`scheduled/<名前>/SKILL.md` の頭の `schedule:` から出す）
   - `data/README.md`: フォルダごとの書き手・読み手（README の「data に書く場所」「data から読む場所」から出す）
   - `models/README.md`: モデルごとの使う repo（README の「使うモデル」から出す）
   - `logs/README.md`: ログのファイルと書く定時処理（plist から出す）
@@ -24,6 +24,7 @@ python3 bin/check_repo_independence.py          # repo が他の repo（src/<別
 - repo や置き場を増やした作業の最後にも、`refresh` を手で1回流す。
 - `bin/check_workspace_paths.py`: 走る先は `src`・`sb`・`SecondBrain/README.md`・`config`・`~/.claude` と `~/.codex` の skill・指示・定時処理・設定。許す場所は `config/external_paths.json`。違反が0件なら終了コード 0。
 - `bin/check_repo_independence.py`: repo（`src/*` と `sb`）が関わってよいのは sb のコマンド・data・models・config・外の場所だけ。他の repo の名指しを1行ずつ出し、終了コード 1。試験と md は見ない。
+- `skills/write-workspace-readme/`: README を作る・直すときの決まりの skill。エージェントが README を書くときに読む（配置は agents の README の使い方）。
 
 ## data に書く場所
 - data/workspace-index

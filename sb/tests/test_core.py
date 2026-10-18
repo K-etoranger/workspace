@@ -145,7 +145,7 @@ def test_lock_contention(sbv):
 
 
 def test_crash_safety(sbv, monkeypatch):
-    assert sbv.run("log", "handoff", "--agent", "claude", "--text", "一回目", "--by", "claude") == 0
+    assert sbv.run("log", "handoff", "--text", "一回目", "--by", "claude") == 0
     before = sbv.read("90_logs/handoff.md")
     # 前回の書きかけの一時ファイルが残っていても壊れない・検査に出ない
     (sbv.vault / "90_logs" / ".handoff.md.sb-tmp-1-abc").write_text("garbage", encoding="utf-8")
@@ -154,11 +154,11 @@ def test_crash_safety(sbv, monkeypatch):
         raise OSError("停電")
     with monkeypatch.context() as m:
         m.setattr(os, "replace", boom)
-        assert sbv.run("log", "handoff", "--agent", "claude", "--text", "二回目", "--by", "claude") == 5
+        assert sbv.run("log", "handoff", "--text", "二回目", "--by", "claude") == 5
     assert sbv.read("90_logs/handoff.md") == before
     leftovers = [p.name for p in (sbv.vault / "90_logs").iterdir()]
     assert leftovers.count(".handoff.md.sb-tmp-1-abc") == 1 and len(leftovers) == 2
-    assert sbv.run("log", "handoff", "--agent", "claude", "--text", "三回目", "--by", "claude", "--json") == 0
+    assert sbv.run("log", "handoff", "--text", "三回目", "--by", "claude", "--json") == 0
     assert "三回目" in sbv.read("90_logs/handoff.md")
 
 

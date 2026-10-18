@@ -14,6 +14,7 @@ bin/memory-recall serve [--port 8767]    # 検索の窓口（ふだんは定時�
 - 引き方（`memory_recall/search.py`）:
   - 問いを manifest の前置き（`query: `）を付けてローカルの Ollama で埋め込み、意味の近い塊を50件。問いの埋め込みは、索引と同じモデルの軽い版（`QUERY_MODEL`、Q4_K_M）を使う。索引のモデルが同じモデルでなければ、引かずに止まる。
   - 問いを manifest の決まりで2文字ずつ区切り、全文検索で50件。
+  - 閲覧の記録（`SecondBrain/50_media/browsing/`、ブラウザ・動画サイトの訪問の表）は候補に入れない（`BROWSING`）。題名の語の一致だけで一般の問いの上位に来るため。
   - 2つの順位を RRF で混ぜ、上位30件を reranker（`memory_recall/rerank.py`、models の下の ruri-v3-reranker-310m を transformers で動かす）で読み比べて並べ直す。
   - 並べ直すとき、今を表す置き場（20_identity・進行中の案件とタスク）に少し点を足す（`CURRENT_BONUS`）。同じ話題の古い記録（過去の会話・連絡・終わったタスク）と今の記録が並んだとき、今の記録を上に出すため。
   - Ollama が止まっていれば、全文検索だけで引き、結果の `status` にそう書く。
@@ -24,6 +25,7 @@ bin/memory-recall serve [--port 8767]    # 検索の窓口（ふだんは定時�
   - `POST /hook`（`session_id`・`prompt`）: 会話に添える文。その会話で最初の発言なら上位10件、2回目からは前に添えていない上位3件（`FIRST`・`NEXT`）。1件の本文は300字まで。返事だけの発言（「承認します」「進めてください」「今どう？」など、`REPLY_WORDS` の言い方だけでできた発言）には添えず、その会話の最初の発言としても数えない。
   - 索引が作り直されたら（`manifest.json` が変わったら）、次の問い合わせで開き直す。
   - 問いや結果の本文はログに出さない。
+- `hooks/memory_recall.py`: 本人が発言するたびにエージェントが動かす hook。発言と会話の ID を窓口の `/hook` へ送り、返ってきた文を会話に添える。標準の Python だけで動き、窓口が止まっている・遅いときは何も添えずに終わる。登録は `hooks/hooks.json`（配置は agents の README の使い方）。
 - 採点（`memory_recall/evaluate.py`）: 問題集は1問ごとに問い・正解の場所（path と行）・古い記録の場所を持つ JSON。上位5件に正解の行を含む塊が入った割合（Recall@5）と MRR@10、古い記録が正解より上に来た問いを出す。`--exclude-after` は、その日以降の 00_inbox を採点から除く（問題集を作った会話そのものが当たるのを避ける）。
 - 部品（sqlite-vec・torch・transformers。版は `requirements.txt` に固定）は repo の `.venv`（git に入れない）にある。`bin/memory-recall` はどの Python で呼んでも `.venv` の Python で動き直す。作り直すときは repo で `/opt/homebrew/bin/python3 -m venv .venv && .venv/bin/pip install -r requirements.txt`。
 

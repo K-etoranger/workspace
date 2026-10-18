@@ -1,0 +1,11 @@
+{
+  "UserPromptSubmit": [
+    {
+      "command": [
+        "/usr/bin/python3",
+        "hooks/memory_recall.py"
+      ],
+      "timeout": 60
+    }
+  ]
+}

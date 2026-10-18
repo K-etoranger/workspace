@@ -1,7 +1,7 @@
 """エージェント専用の Chrome Beta（CDP 9290）を確かめ、止まっていれば起こす。
 
 `python3 bin/chrome_beta.py` で起こす（本人がログインするときも同じ）。
-プロファイルと状態は data/agents の下。Stable・他の Beta には触れない。
+プロファイルと状態は data/agent-setup の下。Stable・他の Beta には触れない。
 """
 import json
 import os
@@ -14,7 +14,7 @@ from pathlib import Path
 PORT = 9290
 EXECUTABLE = "/Applications/Google Chrome Beta.app/Contents/MacOS/Google Chrome Beta"
 BUNDLE_ID = "com.google.Chrome.beta"
-DATA = Path(os.environ.get("AGENTS_DATA", Path.home() / "Workspace/data/agents"))
+DATA = Path(os.environ.get("AGENT_SETUP_DATA", Path.home() / "Workspace/data/agent-setup"))
 PROFILE = DATA / "browser_profiles" / "chrome_beta"
 STATE = DATA / "state" / "chrome_beta.json"
 CDP_URL = f"http://127.0.0.1:{PORT}"

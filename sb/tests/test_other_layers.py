@@ -72,9 +72,10 @@ def test_logs(sbv):
     assert sbv.run("log", "schedule", "--task", "task-checks", "--text", "次は0件", "--by", "w") == 0
     sched = sbv.read("90_logs/schedule/task-checks.md")
     assert sched.count("## 2026-09-29 20:00") == 2
-    assert sbv.run("log", "handoff", "--agent", "codex", "--text", "要旨 / sb / pytest / task:20260929-x", "--by", "codex") == 0
+    assert sbv.run("log", "handoff", "--text", "要旨 / sb / pytest / task:20260929-x", "--by", "codex") == 0
     assert "- 2026-09-29 20:00 [codex] 要旨 / sb / pytest / task:20260929-x" in sbv.read("90_logs/handoff.md")
-    assert sbv.run("log", "handoff", "--agent", "gpt", "--text", "x", "--by", "c") == 1
+    assert sbv.run("log", "handoff", "--text", "x", "--by", "assistant") == 0   # エージェントの名前は限らない
+    assert "[assistant] x" in sbv.read("90_logs/handoff.md")
 
 
 def _snapshot(root):

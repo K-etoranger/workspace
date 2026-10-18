@@ -21,6 +21,9 @@ CANDIDATES = 50  # 意味検索・全文検索それぞれの候補の数
 RERANK_DEPTH = 30  # reranker で読み比べる数
 CURRENT_BONUS = 1.0  # 今を表す置き場（20_identity・進行中の案件とタスク）に足す点（reranker の点を標準化した単位）
 RRF_K = 60
+# 閲覧の記録（ブラウザ・動画サイトの訪問の表）は題名の語の一致だけで上位に来て、一般の問いの雑音になる。
+# 閲覧を聞く問いでも上位にほとんど出ず、要点は 10_daily にあるので、候補に入れない
+BROWSING = "SecondBrain/50_media/browsing/"
 TOKEN_RE = re.compile(r"[0-9a-z]+|[^\W0-9a-z_]+")
 
 
@@ -118,7 +121,7 @@ def search(index: Index, query: str, *, limit: int = 8, reranker=None) -> dict:
         status["dense"] = "ok"
     except OSError as error:  # Ollama が止まっている等。全文検索だけで返し、そう書く
         dense, status["dense"] = [], f"unavailable:{type(error).__name__}"
-    fused = index.rows(rrf(dense, index.lexical(query))[: max(limit, RERANK_DEPTH)])
+    fused = [r for r in index.rows(rrf(dense, index.lexical(query))) if not r["path"].startswith(BROWSING)][: max(limit, RERANK_DEPTH)]
     if reranker is not None and fused:
         scores = reranker.score(query, [passage(r) for r in fused])
         mean = sum(scores) / len(scores)

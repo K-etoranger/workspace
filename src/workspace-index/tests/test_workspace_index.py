@@ -79,9 +79,12 @@ def test_src_lists_agent_jobs_and_data_has_no_cloud_column(tmp_path):
     (tmp_path / "data" / "a").mkdir(parents=True)
     make(tmp_path, "one", writes="- data/a")
     (tmp_path / "src" / "one" / "scheduled" / "daily-job").mkdir(parents=True)
-    (tmp_path / "src" / "one" / "scheduled" / "daily-job" / "SKILL.md").write_text("x", encoding="utf-8")
+    (tmp_path / "src" / "one" / "scheduled" / "daily-job" / "SKILL.md").write_text('---\nschedule: "05 8,17 * * *"\n---\n', encoding="utf-8")
+    (tmp_path / "src" / "one" / "scheduled" / "odd-job").mkdir(parents=True)
+    (tmp_path / "src" / "one" / "scheduled" / "odd-job" / "SKILL.md").write_text("x", encoding="utf-8")
     files, _ = wi.build(tmp_path)
-    assert "`daily-job` エージェント" in files["src/README.md"]
+    assert "`daily-job` 08:05・17:05（エージェント）" in files["src/README.md"]
+    assert "`odd-job` 時刻なし（エージェント）" in files["src/README.md"]
     assert "クラウド" not in files["data/README.md"]
 
 

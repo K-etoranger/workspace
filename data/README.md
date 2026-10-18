@@ -8,7 +8,8 @@
 
 | フォルダ | 書き手 | 読み手 |
 |---|---|---|
-| `data/agents/browser_profiles` | `agents` | なし |
+| `data/agent-setup/browser_profiles` | `agent-setup` | なし |
+| `data/agent-setup/state` | `agent-setup` | なし |
 | `data/agents/state` | `agents` | なし |
 | `data/memory-search/index` | `memory-search` | `memory-recall` |
 | `data/sb` | `sb` | なし |

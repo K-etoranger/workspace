@@ -22,7 +22,7 @@ def _common():
 
 def _writer():
     p = argparse.ArgumentParser(add_help=False)
-    p.add_argument("--by", required=True, help="書いた物。repo の処理は <repo名>/<処理>（importer/talk・sb/tidy）、人・エージェントが直接書くときは 本人・claude・codex")
+    p.add_argument("--by", required=True, help="書いた物。repo の処理は <repo名>/<処理>（importer/talk・sb/tidy）、人・エージェントが直接書くときは 本人 か エージェント名（小文字）")
     return p
 
 
@@ -192,8 +192,7 @@ def build_parser():
     p.add_argument("--date")
     p = cmd(s, "schedule", log.schedule, "定時処理の実行メモへ追記", True, True)
     p.add_argument("--task", required=True)
-    p = cmd(s, "handoff", log.handoff, "引き継ぎログへ1行追記", True, True)
-    p.add_argument("--agent", required=True)
+    cmd(s, "handoff", log.handoff, "引き継ぎログへ1行追記（[ ] には --by の名前が入る）", True, True)
 
     s = group("views", "画面（NOW.md・タスク.base・README.md）")
     cmd(s, "refresh", views.refresh, "作り直す（タスクのファイルは書き換えない）", True)

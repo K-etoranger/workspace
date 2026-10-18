@@ -28,7 +28,7 @@
 
 - 新しい自動化・監視・リマインド・後で動く処理は、頼まれたときだけ作る。
 - お金や法的な確定操作は、確定の前に確かめる。消す・上書きする前に、対象を見て確かめる。止めた物は Workspace に残さず、本人の確認のうえ `~/Documents/_archive_<日付>/` へ出す。
-- 本人の Chrome（Stable。拡張・プラグインを含む）には接続しない。ブラウザ操作は、エージェント専用の Chrome Beta（CDP 9290。起こし方は agents の README）か、エージェント内蔵のブラウザを使う。本人の Chrome のファイル（履歴・Cookie など）はエージェントが直接読まない。読むのは `config/external_paths.json` に載った repo の処理だけ。repo が持つ専用のブラウザは、その repo の処理だけが使う。例外は、本人向けの PDF を開いて見せることだけ。
+- 本人の Chrome（Stable。拡張・プラグインを含む）には接続しない。ブラウザ操作は、エージェント専用の Chrome Beta（CDP 9290。起こし方は agent-setup の README）か、エージェント内蔵のブラウザを使う。本人の Chrome のファイル（履歴・Cookie など）はエージェントが直接読まない。読むのは `config/external_paths.json` に載った repo の処理だけ。repo が持つ専用のブラウザは、その repo の処理だけが使う。例外は、本人向けの PDF を開いて見せることだけ。
 - エージェントは、ほかのエージェントの CLI・認証・常駐を、自分の実行経路や代わりの手段に使わない。
 - uchg で固定されたファイルは、本人の許可なしに解除しない。
 
@@ -46,7 +46,7 @@
 ## 7. 作業の場所
 
 - 作業・成果物・メモは `/Users/taro/Workspace/` の中だけに置く。構造は `Workspace/README.md` からたどる。Workspace の外に触れてよいのは `config/external_paths.json` の場所だけ。自分で作る一時ファイルも Workspace の中（`work/`）に作り、使い終わったら消す。エージェントの定時処理は一時ファイルを作らない。
-- 定時処理を持つ repo は、launchd の物を repo の `launchd/` に、エージェントの物を repo の `scheduled/<名前>/SKILL.md` に置く。Label は `com.taro.<repo>.<処理>`。配置のやり方は、launchd の物は jobs の README、エージェントの物は agents の README。
+- 定時処理を持つ repo は、launchd の物を repo の `launchd/` に、エージェントの物を repo の `scheduled/<名前>/SKILL.md` に置く。Label は `com.taro.<repo>.<処理>`。skill は repo の `skills/<skill>/`、hook は repo の `hooks/`（登録は `hooks/hooks.json`）に置く。特定のエージェントだけの設定・常駐は `<エージェント名>-setup` の repo に置く。配置のやり方は、launchd の物は jobs の README、エージェントの物は agents の README。
 - 新しい物は `work/` で作る。既存の repo と sb は本番の branch を直接直さず、`work/` に切った worktree で直す。やり方は `work/README.md`。
 - README・AGENTS.md・skill など、エージェントが指示として読む文書には、今の形と、その文が無いと読み手が間違える理由だけを書く。経緯（日付・「旧〜」「以前は」に限らず、会話での念押しや、やめた案の打ち消しも含む）は git・タスク・`sb log handoff` に書く。
 - 同じことを複数の文書に書かない。ほかの文書に決まりがあれば、写さずにその文書を指す。

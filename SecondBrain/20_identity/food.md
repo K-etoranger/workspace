@@ -3,7 +3,7 @@
 種類: identity
 ファイル: food
 更新: 2026-10-15T21:00+09:00
-書いた物: agents/distill-preferences
+書いた物: distill/preferences
 ---
 # food
 

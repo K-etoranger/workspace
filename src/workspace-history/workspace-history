@@ -3,7 +3,7 @@
 # - Workspace/.git: README.md・config/（対象は Workspace/.gitignore で決まる）
 # - SecondBrain/.git: SecondBrain の md（対象は SecondBrain/.gitignore で決まる）
 # 対象の作業ツリーは WS_HISTORY_REPOS（改行か空白区切り）で差し替えられる。.git の移設は切り替えのときに行う。
-# usage: workspace-history [--agent Codex|Claude|launchd] [--task-exec ID] [message]
+# usage: workspace-history [--agent <エージェント名（小文字）>] [--task-exec ID] [message]
 # 変更が無ければ何もしない。別のcommitが進行中（index.lock）なら次回に回す。.git が無い作業ツリーは飛ばす。
 set -u
 WS="/Users/taro/Workspace"

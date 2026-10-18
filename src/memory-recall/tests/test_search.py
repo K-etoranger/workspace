@@ -84,6 +84,15 @@ def test_ollama_down_falls_back_to_lexical(index, monkeypatch):
     assert got["status"]["dense"].startswith("unavailable") and got["results"][0]["line_start"] == 21
 
 
+def test_browsing_records_are_not_candidates(tmp_path, monkeypatch):
+    rows = ROWS + [{"path": "SecondBrain/50_media/browsing/web/2026-08-27.md", "line": 84, "layer": "50_media",
+                    "text": "| 19:00 | ABCD-127 - 動画サイト |", "vec": [0, 0, 1, 0]}]
+    make_index(tmp_path / "idx", rows)
+    monkeypatch.setattr(s.Index, "embed_query", lambda self, q, url=s.OLLAMA_URL: [0.0, 0.0, 1.0, 0.0])
+    got = s.search(s.Index(tmp_path / "idx"), "ABCD-127", limit=5)
+    assert got["results"] and not any("50_media/browsing" in r["path"] for r in got["results"])
+
+
 def test_reranker_and_current_bonus_order(index):
     class Flat:  # どれも同じ点を付ける reranker。今を表す置き場の補正だけで順が決まる
         name = "flat"

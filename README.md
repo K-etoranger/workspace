@@ -12,7 +12,7 @@ This repository is a small copy of a real Workspace. The code and the rules are 
 - **Memory is plain Markdown, written through one door.** `SecondBrain/` holds only `.md` files, in numbered layers (inbox, daily notes, identity, projects, tasks, media, distilled notes, logs). Agents and jobs read it freely but write only through the `sb` CLI, which checks the shape of every file before writing and refuses secrets and writes into places the company-confidential gate forbids.
 - **One system, one repo.** Each tool is its own repo under `src/`. A repo may use the `sb` commands, its own folder in `data/`, `models/` and `config/`, and nothing from another repo. Each `data/` folder has exactly one writer, declared in that repo's README.
 - **Maps are generated, not written.** The READMEs that list repos, data folders, models and logs are built from each repo's README and launchd files by `workspace-index`, which also reports anything that breaks the rules above.
-- **Agents follow written rules.** `src/agents/rules/AGENTS.md` is the shared rule book for every agent (answer style, when to ask before changing things, never inventing values, where to work). The same repo deploys skills and scheduled jobs to Claude Code and Codex.
+- **Agents follow written rules.** One shared rule book (`src/agent-setup/rules/AGENTS.md`) tells every agent how to answer, when to ask before changing things, never to invent values, and where to work. Claude Code and Codex read the same file. Each repo keeps its own skills, hooks and scheduled agent jobs next to its code. What only one agent uses lives in a `<agent>-setup` repo (here `src/claude-setup/`), so the shared parts never depend on one agent. `src/agents/` holds none of them and only collects and deploys them.
 - **Change happens in `work/`.** New things are built in `work/`, and existing repos are changed in git worktrees there. Nothing runs from `work/`, and nothing reaches the live branch without the owner's approval.
 
 ## What is inside
@@ -21,7 +21,9 @@ This repository is a small copy of a real Workspace. The code and the rules are 
 |---|---|
 | `SecondBrain/` | The memory: fictional sample notes, tasks and a generated `NOW.md` (today's view) |
 | `sb/` | The CLI that reads and writes `SecondBrain/` (Python 3.9+, standard library only) |
-| `src/agents/` | Shared agent rules, skills, scheduled "distill" jobs and hooks, and the script that deploys them |
+| `src/agent-setup/` | What every agent shares: the rule book and a hook that stops agents from using temp folders outside the Workspace |
+| `src/claude-setup/` | What only Claude Code uses: the entry file that loads the shared rule book, and the base settings |
+| `src/agents/` | Collects every repo's agent rules, settings, hooks, skills and scheduled agent jobs and deploys them to `~/.claude` and `~/.codex` |
 | `src/workspace-index/` | Builds the map READMEs and checks the Workspace rules |
 | `src/workspace-history/` | Records changes to the hand-written files in git every hour |
 | `src/jobs/` | Installs every repo's launchd jobs on the Mac |

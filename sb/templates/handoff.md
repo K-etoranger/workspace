@@ -7,4 +7,4 @@
 ---
 # 引き継ぎログ
 
-<!-- 1件1行: - YYYY-MM-DD HH:MM [claude|codex] 要旨 / 変更対象 / 検証 / task:ID -->
+<!-- 1件1行: - YYYY-MM-DD HH:MM [<書いた物>] 要旨 / 変更対象 / 検証 / task:ID -->

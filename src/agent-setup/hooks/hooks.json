@@ -1,0 +1,11 @@
+{
+  "PreToolUse": [
+    {
+      "matcher": "Bash|Write|Edit|MultiEdit|NotebookEdit",
+      "command": [
+        "/usr/bin/python3",
+        "hooks/guard.py"
+      ]
+    }
+  ]
+}
